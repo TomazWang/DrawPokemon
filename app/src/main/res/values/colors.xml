@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <!-- color for paint -->
+    <color name="paint_red">#F42A35</color>
+    <color name="paint_orange">#FFA200</color>
+    <color name="paint_yellow">#FFD500</color>
+    <color name="paint_green_light">#9ACD23</color>
+    <color name="paint_green">#008000</color>
+    <color name="paint_blue_light">#87CEEB</color>
+    <color name="paint_blue">#325BC5</color>
+    <color name="paint_purple">#945096</color>
+    <color name="paint_pink">#FAD0DE</color>
+    <color name="paint_brown">#8B4513</color>
+    <color name="paint_gray">#A9A9A9 </color>
+    <color name="paint_black">#000000</color>
+
+
+</resources>
