@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="paint_colors">
+
+
+        <item>@color/paint_red</item>
+        <item>@color/paint_orange</item>
+        <item>@color/paint_yellow</item>
+        <item>@color/paint_green_light</item>
+        <item>@color/paint_green</item>
+        <item>@color/paint_blue_light</item>
+        <item>@color/paint_blue</item>
+        <item>@color/paint_purple</item>
+        <item>@color/paint_pink</item>
+        <item>@color/paint_brown</item>
+        <item>@color/paint_gray</item>
+        <item>@color/paint_black</item>
+
+    </array>
+
+
+
+</resources>
