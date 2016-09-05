@@ -9,12 +9,14 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawingView extends View {
 
 
+    private static final String TAG = DrawingView.class.getSimpleName();
     private Path mDrawingPath;
     private Paint mDrawingPaint;
     private Paint mCanvasPaint;
@@ -28,6 +30,8 @@ public class DrawingView extends View {
     private Canvas mCanvas;
     private Bitmap mCanvasBitmap;
     private float mStrokeWidth = 20f;
+
+    private boolean mIsDrawable = true;
 
 
     public DrawingView(Context context) {
@@ -92,6 +96,12 @@ public class DrawingView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if(!mIsDrawable){
+            Log.d(TAG, "onTouchEvent: CANNOT DRAW RIGHT NOW!");
+            return true;
+        }
+
         float touchX = event.getX();
         float touchY = event.getY();
 

@@ -1,12 +1,10 @@
 package idv.tomazwang.app.drawpokemon;
 
-import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,28 +17,27 @@ public class MainActivity extends AppCompatActivity {
     private static final int COLUMN_SIZE = 4;
 
 
-    private RecyclerView mPainColorList;
     private DrawingView mDrawingView;
     private Spinner mSpinnerPokemonName;
     private ImageView mPokemonPic;
     private TextView mTimerText;
     private int[] mColors;
     private int mSelectedColor = Color.BLACK;
+    private ColorPickerDialog mColorPickerDialog;
+    private ImageView mColorPickBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPainColorList = (RecyclerView)findViewById(R.id.list_paint_color);
-        mDrawingView = (DrawingView)findViewById(R.id.view_drawing_pannel);
-        mSpinnerPokemonName = (Spinner)findViewById(R.id.spinner_pokemon_name);
-        mPokemonPic = (ImageView)findViewById(R.id.iv_pokemon_pic);
-        mTimerText = (TextView)findViewById(R.id.txt_timer);
+        mDrawingView = (DrawingView) findViewById(R.id.view_drawing_pannel);
+        mSpinnerPokemonName = (Spinner) findViewById(R.id.spinner_pokemon_name);
+        mPokemonPic = (ImageView) findViewById(R.id.iv_pokemon_pic);
+        mTimerText = (TextView) findViewById(R.id.txt_timer);
+        mColorPickBtn = (ImageView)findViewById(R.id.btn_color_picker);
 
         setupColorPicker();
-
-
 
     }
 
@@ -49,30 +46,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Button btn_pick_color = (Button)findViewById(R.id.btn_color_picker);
-        btn_pick_color.setOnClickListener(view -> showColorPicker());
-
 
     }
 
     private void showColorPicker() {
 
-        ColorPickerDialog colorPickerDialog = ColorPickerDialog.newInstance(
+        if(mColorPickerDialog != null){
+            mColorPickerDialog.show(getFragmentManager(),"color_picker");
+            return;
+        }
+
+        mColorPickerDialog = ColorPickerDialog.newInstance(
                 getResources().getString(R.string.default_color_picker_title),
                 mColors,
                 mSelectedColor,
                 COLUMN_SIZE,
-                isTablet(this)? ColorPickerDialog.SIZE_LARGE : ColorPickerDialog.SIZE_SMALL
+                Utils.isTablet(this) ? ColorPickerDialog.SIZE_LARGE : ColorPickerDialog.SIZE_SMALL
         );
 
-        colorPickerDialog.setColorSelectedListener(this::colorSelected);
-        colorPickerDialog.show(getFragmentManager(), "color_picker");
+        mColorPickerDialog.setColorSelectedListener(this::colorSelected);
+        mColorPickerDialog.show(getFragmentManager(), "color_picker");
     }
 
     private void colorSelected(int color) {
 
         mSelectedColor = color;
-        mDrawingView.setPaintColor(mSelectedColor);
+        setPickerColor(mSelectedColor);
 
     }
 
@@ -80,14 +79,54 @@ public class MainActivity extends AppCompatActivity {
 
         mColors = getResources().getIntArray(R.array.paint_colors);
 
+        mColorPickBtn.setOnClickListener(view -> showColorPicker());
+        setPickerColor(mSelectedColor);
+
     }
 
 
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    protected void setPickerColor(int color) {
+
+        mDrawingView.setPaintColor(mSelectedColor);
+
+        if(color == cColor(R.color.paint_red)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_red));
+        }else if(color == cColor(R.color.paint_orange)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_orange));
+        }else if(color == cColor(R.color.paint_yellow)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_yellow));
+        }else if(color == cColor(R.color.paint_green_light)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_green_l));
+        }else if(color == cColor(R.color.paint_green)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_green));
+        }else if(color == cColor(R.color.paint_blue)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_blue));
+        }else if(color == cColor(R.color.paint_blue_light)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_blue_l));
+        }else if(color == cColor(R.color.paint_purple)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_purple));
+        }else if(color == cColor(R.color.paint_pink)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_pink));
+        }else if(color == cColor(R.color.paint_brown)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_brown));
+        }else if(color == cColor(R.color.paint_gray)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_gray));
+        }else if(color == cColor(R.color.paint_black)){
+            mColorPickBtn.setImageDrawable(cDrawable(R.drawable.painter_palette_black));
+        }
+
+
     }
+
+
+    private int cColor(int id){
+        return ContextCompat.getColor(this, id);
+    }
+
+    private Drawable cDrawable(int id){
+        return ContextCompat.getDrawable(this, id);
+    }
+
 
 
 }
