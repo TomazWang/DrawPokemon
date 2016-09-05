@@ -147,4 +147,12 @@ public class DrawingView extends View {
 
         mDrawingPaint.setColor(colorInt);
     }
+
+    public void setDrawable(boolean isDrawable){
+        this.mIsDrawable = isDrawable;
+    }
+
+    public boolean isDrawable(){
+        return mIsDrawable;
+    }
 }
