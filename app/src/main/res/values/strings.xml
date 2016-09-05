@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DrawPokemon</string>
+    <string name="default_color_picker_title">Pick A Color</string>
 </resources>

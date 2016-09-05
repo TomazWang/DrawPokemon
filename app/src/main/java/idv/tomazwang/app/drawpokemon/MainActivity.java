@@ -1,26 +1,31 @@
 package idv.tomazwang.app.drawpokemon;
 
-import android.content.res.TypedArray;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
+import idv.tomazwang.app.drawpokemon.colorpicker.ColorPickerDialog;
 import idv.tomazwang.app.drawpokemon.view.DrawingView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int COLUMN_SIZE = 4;
+
 
     private RecyclerView mPainColorList;
     private DrawingView mDrawingView;
     private Spinner mSpinnerPokemonName;
     private ImageView mPokemonPic;
     private TextView mTimerText;
-    private static ArrayList<Integer> sColorList;
+    private int[] mColors;
+    private int mSelectedColor = Color.BLACK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +48,46 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Button btn_pick_color = (Button)findViewById(R.id.btn_color_picker);
+        btn_pick_color.setOnClickListener(view -> showColorPicker());
+
+
+    }
+
+    private void showColorPicker() {
+
+        ColorPickerDialog colorPickerDialog = ColorPickerDialog.newInstance(
+                getResources().getString(R.string.default_color_picker_title),
+                mColors,
+                mSelectedColor,
+                COLUMN_SIZE,
+                isTablet(this)? ColorPickerDialog.SIZE_LARGE : ColorPickerDialog.SIZE_SMALL
+        );
+
+        colorPickerDialog.setColorSelectedListener(this::colorSelected);
+        colorPickerDialog.show(getFragmentManager(), "color_picker");
+    }
+
+    private void colorSelected(int color) {
+
+        mSelectedColor = color;
+        mDrawingView.setPaintColor(mSelectedColor);
+
     }
 
     private void setupColorPicker() {
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mPainColorList.setLayoutManager(layoutManager);
-
-        TypedArray colorArray = getResources().obtainTypedArray(R.array.paint_colors);
-
-        for(int i = 0; i<colorArray.length(); i++){
-            sColorList.add(colorArray.getColor(i,0));
-        }
-
-        ColorPickerListAdapter adapter = new ColorPickerListAdapter(sColorList);
-
-
+        mColors = getResources().getIntArray(R.array.paint_colors);
 
     }
 
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
 
 
 }
