@@ -159,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawingView.cleanCanvas();
         mDrawingView.setDrawable(false);
 
-        mColorPickerDialog.dismiss();
+        if(mColorPickerDialog != null) {
+            mColorPickerDialog.dismiss();
+        }
 
         mGameFlag = GAME_RESET;
     }
@@ -211,7 +213,9 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setVisibility(View.VISIBLE);
         mPlayBtn.setText(getResources().getString(R.string.resume));
 
-        mColorPickerDialog.dismiss();
+        if(mColorPickerDialog != null) {
+            mColorPickerDialog.dismiss();
+        }
     }
 
     private void resumeGame(){
@@ -227,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopGame() {
 
-        // TODO: show time's up dialog.
+        mDrawingView.drawLastLine();
 
         ResultDialog.newInstance().show(getFragmentManager(),TAG_RESULT_DIALOG);
 
@@ -275,9 +279,9 @@ public class MainActivity extends AppCompatActivity {
     private void stopTimer() {
         if (mTimer != null) {
             mTimer.cancel();
-            mTimerText.setText("0");
-            mTimerState = TIMER_STOP;
         }
+        mTimerText.setText("0");
+        mTimerState = TIMER_STOP;
     }
 
 

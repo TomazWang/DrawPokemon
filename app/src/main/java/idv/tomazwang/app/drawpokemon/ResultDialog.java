@@ -38,7 +38,6 @@ public class ResultDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mResultBitmap = ((MainActivity)getActivity()).getResultBitmap();
     }
 
     @Override
@@ -49,6 +48,8 @@ public class ResultDialog extends DialogFragment {
         mSaveBtn = (Button)view.findViewById(R.id.btn_save);
         mShareBtn = (Button)view.findViewById(R.id.btn_share);
         mAgainBtn = (Button)view.findViewById(R.id.btn_again);
+
+        mResultBitmap = ((MainActivity)getActivity()).getResultBitmap();
 
         mResultImg.setImageBitmap(mResultBitmap);
 

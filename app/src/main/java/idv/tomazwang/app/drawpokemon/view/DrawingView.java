@@ -167,4 +167,9 @@ public class DrawingView extends View {
         return mCanvasBitmap;
     }
 
+    public void drawLastLine(){
+        mCanvas.drawPath(mDrawingPath, mDrawingPaint);
+        mDrawingPath.reset();
+    }
+
 }
