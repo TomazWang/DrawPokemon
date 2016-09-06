@@ -9,11 +9,17 @@ import android.os.CountDownTimer;
 import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,21 +37,25 @@ public class MainActivity extends AppCompatActivity {
     private static final int GAME_TIME = 30; //seconds.
     private static final String POKEMON_LIST_FILE = "pokedex.json";
     private static final String TAG_RESULT_DIALOG = "result_dialog";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
 
     private DrawingView mDrawingView;
     private Spinner mSpinnerPokemonName;
     private ImageView mPokemonPic;
     private TextView mTimerText;
-    private int[] mColors;
-    private int mSelectedColor = Color.BLACK;
     private ColorPickerDialog mColorPickerDialog;
     private ImageView mColorPickBtn;
+    private Button mPlayBtn;
+
+    private int[] mColors;
+    private int mSelectedColor = Color.BLACK;
 
     private static final int TIMER_STOP = 0;
     private static final int TIMER_RUNNING = 1;
     private static final int TIMER_PAUSE = 2;
     private ArrayList<Pokemon> mPokemonList = new ArrayList<>();
+
 
     @IntDef({TIMER_STOP, TIMER_RUNNING, TIMER_PAUSE})
     public @interface TimerState {
@@ -80,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         mPokemonPic = (ImageView) findViewById(R.id.iv_pokemon_pic);
         mTimerText = (TextView) findViewById(R.id.txt_timer);
         mColorPickBtn = (ImageView) findViewById(R.id.btn_color_picker);
+        mPlayBtn = (Button)findViewById(R.id.btn_play);
 
         setupColorPicker();
     }
@@ -91,17 +102,17 @@ public class MainActivity extends AppCompatActivity {
 
         readAllPokemon();
 
-        mPokemonPic.setOnClickListener(v -> {
+        mPlayBtn.setOnClickListener(v -> {
 
             if (mTimerState == TIMER_STOP) {
                 startGame();
             } else if (mTimerState == TIMER_PAUSE) {
-               resumeGame();
+                resumeGame();
             }
 
-        });
+            mPlayBtn.setVisibility(View.GONE);
 
-        resetGame();
+        });
 
     }
 
@@ -142,9 +153,13 @@ public class MainActivity extends AppCompatActivity {
         pauseGame();
     }
 
-    private void resetGame(){
+    public void resetGame(){
+        mPokemonPic.setImageDrawable(cDrawable(R.drawable.pokeball));
+
         mDrawingView.cleanCanvas();
         mDrawingView.setDrawable(false);
+
+        mColorPickerDialog.dismiss();
 
         mGameFlag = GAME_RESET;
     }
@@ -162,14 +177,28 @@ public class MainActivity extends AppCompatActivity {
 
         Glide
                 .with(this)
-                .load("android.resource://idv.tomazwang.app.pokedex/raw/" + rawFileName)
+                .load("android.resource://idv.tomazwang.app.drawpokemon/raw/" + rawFileName)
                 .thumbnail(0.1f)
+                .error(R.drawable.pokeball)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        Log.d(TAG, "onException: "+e.getMessage());
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
                 .into(mPokemonPic);
 
         mDrawingView.setDrawable(true);
 
         startTimer(GAME_TIME);
         mGameFlag = GAME_START;
+
     }
 
 
@@ -178,11 +207,18 @@ public class MainActivity extends AppCompatActivity {
 
         pauseTimer();
         mGameFlag = GAME_PAUSE;
+
+        mPlayBtn.setVisibility(View.VISIBLE);
+        mPlayBtn.setText(getResources().getString(R.string.resume));
+
+        mColorPickerDialog.dismiss();
     }
 
     private void resumeGame(){
 
         // TODO: check if pause dialog is showing.
+
+        mDrawingView.setDrawable(true);
 
         resumeTimer();
         mGameFlag = GAME_START;
@@ -201,6 +237,14 @@ public class MainActivity extends AppCompatActivity {
         mGameFlag = GAME_STOP;
 
     }
+
+
+    public void playAgain () {
+        resetGame();
+        mPlayBtn.setVisibility(View.VISIBLE);
+        mPlayBtn.setText(getString(R.string.paly));
+    }
+
 
     private void startTimer(int sec) {
 

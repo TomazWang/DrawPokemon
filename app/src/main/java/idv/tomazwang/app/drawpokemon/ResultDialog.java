@@ -3,6 +3,7 @@ package idv.tomazwang.app.drawpokemon;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,7 +54,7 @@ public class ResultDialog extends DialogFragment {
 
         mSaveBtn.setOnClickListener(v -> saveImage());
         mShareBtn.setOnClickListener(v -> share());
-        mAgainBtn.setOnClickListener(v-> palyAgain());
+        mAgainBtn.setOnClickListener(v-> playAgain());
 
 
         mDialog = new AlertDialog.Builder(getActivity())
@@ -65,18 +66,25 @@ public class ResultDialog extends DialogFragment {
 
 
 
-
         return mDialog;
     }
 
-    private void palyAgain() {
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        playAgain();
+    }
 
+    private void playAgain() {
+        ((MainActivity)getActivity()).playAgain();
+        mDialog.dismiss();
     }
 
     private void share() {
-
+        // TODO: share image
     }
 
     private void saveImage() {
+        // TODO:save image.
     }
 }

@@ -156,8 +156,10 @@ public class DrawingView extends View {
     }
 
     public void cleanCanvas() {
-        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR );
-        invalidate();
+        if(mCanvas != null) {
+            mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+            invalidate();
+        }
     }
 
     public Bitmap getBitmap(){
