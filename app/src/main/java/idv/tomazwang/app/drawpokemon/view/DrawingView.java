@@ -7,9 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -98,7 +98,6 @@ public class DrawingView extends View {
     public boolean onTouchEvent(MotionEvent event) {
 
         if(!mIsDrawable){
-            Log.d(TAG, "onTouchEvent: CANNOT DRAW RIGHT NOW!");
             return true;
         }
 
@@ -155,4 +154,15 @@ public class DrawingView extends View {
     public boolean isDrawable(){
         return mIsDrawable;
     }
+
+    public void cleanCanvas() {
+        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR );
+        invalidate();
+    }
+
+    public Bitmap getBitmap(){
+        this.setDrawingCacheEnabled(true);
+        return mCanvasBitmap;
+    }
+
 }

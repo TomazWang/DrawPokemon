@@ -53,4 +53,6 @@ public class ColorPickerSwatch extends FrameLayout implements View.OnClickListen
             mOnColorSelectedListener.onColorSelected(mColor);
         }
     }
+
+
 }

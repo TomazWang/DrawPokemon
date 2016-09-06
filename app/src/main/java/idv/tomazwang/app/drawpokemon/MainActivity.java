@@ -1,5 +1,7 @@
 package idv.tomazwang.app.drawpokemon;
 
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,6 +13,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import idv.tomazwang.app.drawpokemon.colorpicker.ColorPickerDialog;
 import idv.tomazwang.app.drawpokemon.view.DrawingView;
 
@@ -18,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int COLUMN_SIZE = 4;
     private static final int GAME_TIME = 30; //seconds.
+    private static final String POKEMON_LIST_FILE = "pokedex.json";
+    private static final String TAG_RESULT_DIALOG = "result_dialog";
 
 
     private DrawingView mDrawingView;
@@ -32,11 +45,26 @@ public class MainActivity extends AppCompatActivity {
     private static final int TIMER_STOP = 0;
     private static final int TIMER_RUNNING = 1;
     private static final int TIMER_PAUSE = 2;
+    private ArrayList<Pokemon> mPokemonList = new ArrayList<>();
 
-    @IntDef({TIMER_STOP,TIMER_RUNNING,TIMER_PAUSE})
-    public @interface TimerState{};
+    @IntDef({TIMER_STOP, TIMER_RUNNING, TIMER_PAUSE})
+    public @interface TimerState {
+    }
 
-    @TimerState private int mTimerState = TIMER_STOP;
+    @TimerState
+    private int mTimerState = TIMER_STOP;
+
+
+    private static final int GAME_RESET = 518;
+    private static final int GAME_START = 126;
+    private static final int GAME_PAUSE = 562;
+    private static final int GAME_STOP = 578;
+
+    @IntDef({GAME_RESET, GAME_START, GAME_PAUSE, GAME_STOP})
+    public @interface GameFlag{}
+
+    @GameFlag
+    private int mGameFlag = GAME_STOP;
 
     private long mRemainTime = 0;
     private CountDownTimer mTimer;
@@ -51,10 +79,9 @@ public class MainActivity extends AppCompatActivity {
         mSpinnerPokemonName = (Spinner) findViewById(R.id.spinner_pokemon_name);
         mPokemonPic = (ImageView) findViewById(R.id.iv_pokemon_pic);
         mTimerText = (TextView) findViewById(R.id.txt_timer);
-        mColorPickBtn = (ImageView)findViewById(R.id.btn_color_picker);
+        mColorPickBtn = (ImageView) findViewById(R.id.btn_color_picker);
 
         setupColorPicker();
-
     }
 
 
@@ -62,17 +89,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        readAllPokemon();
 
         mPokemonPic.setOnClickListener(v -> {
 
-            if(mTimerState == TIMER_STOP){
-                startTimer(GAME_TIME);
-            }else if(mTimerState == TIMER_PAUSE){
-                resumeTimer();
+            if (mTimerState == TIMER_STOP) {
+                startGame();
+            } else if (mTimerState == TIMER_PAUSE) {
+               resumeGame();
             }
 
         });
 
+        resetGame();
+
+    }
+
+    private void readAllPokemon() {
+        try {
+
+
+            AssetManager assetManager = this.getAssets();
+            InputStream is = assetManager.open(POKEMON_LIST_FILE);
+
+            int size = is.available();
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+            is.close();
+
+            String bufferString = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Pokemon>>() {
+            }.getType();
+
+            ArrayList<Pokemon> pokemonList = gson.fromJson(bufferString, listType);
+
+            mPokemonList.addAll(pokemonList);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -80,49 +139,86 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        pauseTimer();
+        pauseGame();
     }
 
+    private void resetGame(){
+        mDrawingView.cleanCanvas();
+        mDrawingView.setDrawable(false);
+
+        mGameFlag = GAME_RESET;
+    }
+
+    private void startGame() {
+
+        if(mGameFlag != GAME_RESET){
+            resetGame();
+        }
 
 
-    private void startGame(){
+        int pokeID = (int) ((Math.random() * mPokemonList.size()) + 1);
 
-        // TODO: show pokemon pic
+        String rawFileName = mPokemonList.get(pokeID).getPic_name().split("\\.")[0];
+
+        Glide
+                .with(this)
+                .load("android.resource://idv.tomazwang.app.pokedex/raw/" + rawFileName)
+                .thumbnail(0.1f)
+                .into(mPokemonPic);
+
+        mDrawingView.setDrawable(true);
 
         startTimer(GAME_TIME);
-
-
+        mGameFlag = GAME_START;
     }
 
 
-
-    private void pauseGame(){
+    private void pauseGame() {
         // TODO: show pause dialog
+
+        pauseTimer();
+        mGameFlag = GAME_PAUSE;
+    }
+
+    private void resumeGame(){
+
+        // TODO: check if pause dialog is showing.
+
+        resumeTimer();
+        mGameFlag = GAME_START;
     }
 
 
-    private void stopGame(){
-        // TODO: after time's up
+    private void stopGame() {
+
+        // TODO: show time's up dialog.
+
+        ResultDialog.newInstance().show(getFragmentManager(),TAG_RESULT_DIALOG);
+
+        stopTimer();
+        mDrawingView.setDrawable(false);
+
+        mGameFlag = GAME_STOP;
+
     }
 
     private void startTimer(int sec) {
 
-        if(mTimer != null){
+        if (mTimer != null) {
             mTimer.cancel();
         }
 
-        mTimer = new CountDownTimer(sec*1000, 100){
+        mTimer = new CountDownTimer(sec * 1000, 100) {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                mTimerText.setText(""+millisUntilFinished/1000);
+                mTimerText.setText("" + millisUntilFinished / 1000);
                 mRemainTime = millisUntilFinished;
             }
 
             @Override
             public void onFinish() {
-                mTimerText.setText("0");
-
+                stopGame();
             }
 
         };
@@ -132,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void stopTimer(){
-        if(mTimer != null){
+    private void stopTimer() {
+        if (mTimer != null) {
             mTimer.cancel();
             mTimerText.setText("0");
             mTimerState = TIMER_STOP;
@@ -141,24 +237,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void pauseTimer(){
-        if(mTimer != null){
+    private void pauseTimer() {
+        if (mTimer != null) {
             mTimer.cancel();
             mTimerState = TIMER_PAUSE;
         }
     }
 
-    private void resumeTimer(){
-        startTimer((int) (mRemainTime/1000));
+    private void resumeTimer() {
+        startTimer((int) (mRemainTime / 1000));
     }
 
 
+    public Bitmap getResultBitmap() {
+
+        if (mDrawingView != null) {
+            return mDrawingView.getBitmap();
+        } else {
+            return null;
+        }
+    }
 
 
     private void showColorPicker() {
 
-        if(mColorPickerDialog != null){
-            mColorPickerDialog.show(getFragmentManager(),"color_picker");
+        if (mColorPickerDialog != null) {
+            mColorPickerDialog.show(getFragmentManager(), "color_picker");
             return;
         }
 
@@ -199,39 +303,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private int cColor(int id){
+    private int cColor(int id) {
         return ContextCompat.getColor(this, id);
     }
 
-    private Drawable cDrawable(int id){
+    private Drawable cDrawable(int id) {
         return ContextCompat.getDrawable(this, id);
     }
 
-    private int colorToDrawable(int color){
+    private int colorToDrawable(int color) {
 
-        if(color == cColor(R.color.paint_red)){
+        if (color == cColor(R.color.paint_red)) {
             return R.drawable.painter_palette_red;
-        }else if(color == cColor(R.color.paint_orange)){
-           return R.drawable.painter_palette_orange;
-        }else if(color == cColor(R.color.paint_yellow)){
+        } else if (color == cColor(R.color.paint_orange)) {
+            return R.drawable.painter_palette_orange;
+        } else if (color == cColor(R.color.paint_yellow)) {
             return R.drawable.painter_palette_yellow;
-        }else if(color == cColor(R.color.paint_green_light)){
+        } else if (color == cColor(R.color.paint_green_light)) {
             return R.drawable.painter_palette_green_l;
-        }else if(color == cColor(R.color.paint_green)){
+        } else if (color == cColor(R.color.paint_green)) {
             return R.drawable.painter_palette_green;
-        }else if(color == cColor(R.color.paint_blue)){
+        } else if (color == cColor(R.color.paint_blue)) {
             return R.drawable.painter_palette_blue;
-        }else if(color == cColor(R.color.paint_blue_light)){
+        } else if (color == cColor(R.color.paint_blue_light)) {
             return R.drawable.painter_palette_blue_l;
-        }else if(color == cColor(R.color.paint_purple)){
+        } else if (color == cColor(R.color.paint_purple)) {
             return R.drawable.painter_palette_purple;
-        }else if(color == cColor(R.color.paint_pink)){
+        } else if (color == cColor(R.color.paint_pink)) {
             return R.drawable.painter_palette_pink;
-        }else if(color == cColor(R.color.paint_brown)){
+        } else if (color == cColor(R.color.paint_brown)) {
             return R.drawable.painter_palette_brown;
-        }else if(color == cColor(R.color.paint_gray)){
+        } else if (color == cColor(R.color.paint_gray)) {
             return R.drawable.painter_palette_gray;
-        }else if(color == cColor(R.color.paint_black)){
+        } else if (color == cColor(R.color.paint_black)) {
             return R.drawable.painter_palette_black;
         }
 
