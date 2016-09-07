@@ -164,7 +164,7 @@ public class DrawingView extends View {
 
     public Bitmap getBitmap(){
         this.setDrawingCacheEnabled(true);
-        return mCanvasBitmap;
+        return getDrawingCache();
     }
 
     public void drawLastLine(){

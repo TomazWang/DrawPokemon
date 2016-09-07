@@ -3,4 +3,5 @@
     <string name="default_color_picker_title">Pick A Color</string>
     <string name="paly">Play</string>
     <string name="resume">Resume</string>
+    <string name="saveComplete">Save Complete</string>
 </resources>

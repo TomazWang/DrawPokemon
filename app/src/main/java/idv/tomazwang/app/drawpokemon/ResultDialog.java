@@ -5,12 +5,18 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.File;
 
 /**
  * Created by TomazWang on 2016/9/6.
@@ -19,6 +25,7 @@ import android.widget.ImageView;
 public class ResultDialog extends DialogFragment {
 
 
+    private static final String TAG = ResultDialog.class.getSimpleName();
     private Bitmap mResultBitmap;
     private ImageView mResultImg;
     private Button mSaveBtn;
@@ -53,7 +60,7 @@ public class ResultDialog extends DialogFragment {
 
         mResultImg.setImageBitmap(mResultBitmap);
 
-        mSaveBtn.setOnClickListener(v -> saveImage());
+        mSaveBtn.setOnClickListener(v -> saveImage(mResultBitmap));
         mShareBtn.setOnClickListener(v -> share());
         mAgainBtn.setOnClickListener(v-> playAgain());
 
@@ -85,7 +92,41 @@ public class ResultDialog extends DialogFragment {
         // TODO: share image
     }
 
-    private void saveImage() {
-        // TODO:save image.
+    private void saveImage(Bitmap bitmap) {
+        SaveImageTask saveImageTask = new SaveImageTask(getActivity(), filePath -> onSaveComplete(filePath));
+        saveImageTask.execute(bitmap);
     }
+
+    private void onSaveComplete(File filePath) {
+
+        if(filePath == null){
+            Log.w(TAG, "onSaveComplete: file dir error");
+            return;
+        }
+
+        Toast saveCompleteMsg = Toast.makeText(getActivity(), getString(R.string.saveComplete), Toast.LENGTH_SHORT);
+        saveCompleteMsg.show();
+        Log.d(TAG, "onSaveComplete: save image in "+filePath);
+
+
+        MediaScannerConnection.scanFile(
+                getActivity(),
+                new String[]{filePath.getAbsolutePath()},
+                null,
+                new MediaScannerConnection.MediaScannerConnectionClient() {
+                    @Override
+                    public void onMediaScannerConnected() {
+                        Log.d(TAG, "onMediaScannerConnected");
+                    }
+
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.d(TAG, "onScanCompleted");
+                    }
+                }
+        );
+
+    }
+
+
 }

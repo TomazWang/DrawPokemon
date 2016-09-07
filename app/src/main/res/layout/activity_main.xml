@@ -4,12 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="idv.tomazwang.app.drawpokemon.MainActivity">
+    tools:context="idv.tomazwang.app.drawpokemon.MainActivity"
+    android:background="@color/bg_gray"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="25dp">
 
         <ImageView
             android:id="@+id/iv_pokemon_pic"
@@ -58,13 +62,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        >
 
     <idv.tomazwang.app.drawpokemon.view.DrawingView
         android:id="@+id/view_drawing_pannel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"/>
 
     <Button
         android:layout_width="wrap_content"

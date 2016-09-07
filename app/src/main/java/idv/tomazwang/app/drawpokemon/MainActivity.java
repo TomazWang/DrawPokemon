@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int GAME_STOP = 578;
 
     @IntDef({GAME_RESET, GAME_START, GAME_PAUSE, GAME_STOP})
-    public @interface GameFlag{}
+    public @interface GameFlag {
+    }
 
     @GameFlag
     private int mGameFlag = GAME_STOP;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         mPokemonPic = (ImageView) findViewById(R.id.iv_pokemon_pic);
         mTimerText = (TextView) findViewById(R.id.txt_timer);
         mColorPickBtn = (ImageView) findViewById(R.id.btn_color_picker);
-        mPlayBtn = (Button)findViewById(R.id.btn_play);
+        mPlayBtn = (Button) findViewById(R.id.btn_play);
 
         setupColorPicker();
     }
@@ -150,16 +151,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        pauseGame();
+        if (mGameFlag == GAME_START) {
+            pauseGame();
+        }
+
     }
 
-    public void resetGame(){
+    public void resetGame() {
         mPokemonPic.setImageDrawable(cDrawable(R.drawable.pokeball));
 
         mDrawingView.cleanCanvas();
         mDrawingView.setDrawable(false);
 
-        if(mColorPickerDialog != null) {
+        if (mColorPickerDialog != null) {
             mColorPickerDialog.dismiss();
         }
 
@@ -168,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startGame() {
 
-        if(mGameFlag != GAME_RESET){
+        if (mGameFlag != GAME_RESET) {
             resetGame();
         }
 
@@ -185,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        Log.d(TAG, "onException: "+e.getMessage());
+                        Log.d(TAG, "onException: " + e.getMessage());
                         return false;
                     }
 
@@ -213,12 +217,12 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setVisibility(View.VISIBLE);
         mPlayBtn.setText(getResources().getString(R.string.resume));
 
-        if(mColorPickerDialog != null) {
+        if (mColorPickerDialog != null) {
             mColorPickerDialog.dismiss();
         }
     }
 
-    private void resumeGame(){
+    private void resumeGame() {
 
         // TODO: check if pause dialog is showing.
 
@@ -233,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawingView.drawLastLine();
 
-        ResultDialog.newInstance().show(getFragmentManager(),TAG_RESULT_DIALOG);
+        ResultDialog.newInstance().show(getFragmentManager(), TAG_RESULT_DIALOG);
 
         stopTimer();
         mDrawingView.setDrawable(false);
@@ -243,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void playAgain () {
+    public void playAgain() {
         resetGame();
         mPlayBtn.setVisibility(View.VISIBLE);
         mPlayBtn.setText(getString(R.string.paly));
