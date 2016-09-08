@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -12,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,15 +28,17 @@ public class ResultDialog extends DialogFragment {
     private static final String TAG = ResultDialog.class.getSimpleName();
     private Bitmap mResultBitmap;
     private ImageView mResultImg;
-    private Button mSaveBtn;
-    private Button mShareBtn;
-    private Button mAgainBtn;
+    private ImageView mSaveBtn;
+    private ImageView mShareBtn;
+    private ImageView mAgainBtn;
     private AlertDialog mDialog;
 
-    public ResultDialog(){super();}
+    public ResultDialog() {
+        super();
+    }
 
 
-    public static ResultDialog newInstance(){
+    public static ResultDialog newInstance() {
         ResultDialog rd = new ResultDialog();
         return rd;
     }
@@ -50,19 +52,19 @@ public class ResultDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view  = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_result, null);
-        mResultImg = (ImageView)view.findViewById(R.id.iv_result);
-        mSaveBtn = (Button)view.findViewById(R.id.btn_save);
-        mShareBtn = (Button)view.findViewById(R.id.btn_share);
-        mAgainBtn = (Button)view.findViewById(R.id.btn_again);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_result, null);
+        mResultImg = (ImageView) view.findViewById(R.id.iv_result);
+        mSaveBtn = (ImageView) view.findViewById(R.id.btn_save);
+        mShareBtn = (ImageView) view.findViewById(R.id.btn_share);
+        mAgainBtn = (ImageView) view.findViewById(R.id.btn_again);
 
-        mResultBitmap = ((MainActivity)getActivity()).getResultBitmap();
+        mResultBitmap = ((MainActivity) getActivity()).getResultBitmap();
 
         mResultImg.setImageBitmap(mResultBitmap);
 
-        mSaveBtn.setOnClickListener(v -> saveImage(mResultBitmap));
+        mSaveBtn.setOnClickListener(v -> saveImage(filePath -> onSaveComplete(filePath)));
         mShareBtn.setOnClickListener(v -> share());
-        mAgainBtn.setOnClickListener(v-> playAgain());
+        mAgainBtn.setOnClickListener(v -> playAgain());
 
 
         mDialog = new AlertDialog.Builder(getActivity())
@@ -71,7 +73,6 @@ public class ResultDialog extends DialogFragment {
 
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setCanceledOnTouchOutside(false);
-
 
 
         return mDialog;
@@ -84,29 +85,50 @@ public class ResultDialog extends DialogFragment {
     }
 
     private void playAgain() {
-        ((MainActivity)getActivity()).playAgain();
+        ((MainActivity) getActivity()).playAgain();
         mDialog.dismiss();
     }
 
     private void share() {
         // TODO: share image
+
+
+        saveImage(filePath -> {
+
+                File pictureFile = ResultDialog.this.onSaveComplete(filePath);
+                if(pictureFile != null){
+
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("image/jpeg");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pictureFile));
+                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)));
+
+                }else{
+                    Toast.makeText(getActivity(), R.string.cannot_share_image, Toast.LENGTH_SHORT).show();
+                }
+
+                }
+        );
+
+
     }
 
-    private void saveImage(Bitmap bitmap) {
-        SaveImageTask saveImageTask = new SaveImageTask(getActivity(), filePath -> onSaveComplete(filePath));
-        saveImageTask.execute(bitmap);
+    private void saveImage(SaveImageTask.Callback callback) {
+        Log.d(TAG, "saveImage: saving image");
+        SaveImageTask saveImageTask = new SaveImageTask(getActivity(), callback);
+        saveImageTask.execute(mResultBitmap);
     }
 
-    private void onSaveComplete(File filePath) {
+    private File onSaveComplete(File filePath) {
 
-        if(filePath == null){
+        if (filePath == null) {
             Log.w(TAG, "onSaveComplete: file dir error");
-            return;
+            return null;
         }
 
         Toast saveCompleteMsg = Toast.makeText(getActivity(), getString(R.string.saveComplete), Toast.LENGTH_SHORT);
         saveCompleteMsg.show();
-        Log.d(TAG, "onSaveComplete: save image in "+filePath);
+        Log.d(TAG, "onSaveComplete: save image in " + filePath);
 
 
         MediaScannerConnection.scanFile(
@@ -126,6 +148,7 @@ public class ResultDialog extends DialogFragment {
                 }
         );
 
+        return filePath;
     }
 
 

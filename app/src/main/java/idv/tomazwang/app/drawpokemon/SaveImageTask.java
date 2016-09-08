@@ -54,9 +54,15 @@ public class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
         File pictureFile = getOutputMediaFile(ctx);
         if (pictureFile == null) {
             Log.d(TAG,
-                    "Error creating media file, check storage permissions: ");// saveBitmapToFile.getMessage());
+                    "Error creating media file, check storage permissions: ");
             return null;
         }
+
+        if(pictureFile.exists()){
+            Log.d(TAG, "saveBitmapToFile: file already exist");
+            return pictureFile;
+        }
+
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);

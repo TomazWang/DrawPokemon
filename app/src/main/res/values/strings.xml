@@ -4,4 +4,6 @@
     <string name="paly">Play</string>
     <string name="resume">Resume</string>
     <string name="saveComplete">Save Complete</string>
+    <string name="cannot_share_image">Cannot share image due to image saving problem.</string>
+    <string name="share_using">Share Image Using</string>
 </resources>

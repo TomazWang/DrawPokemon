@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn = (Button) findViewById(R.id.btn_play);
 
         setupColorPicker();
+        mDrawingView.setDrawable(false);
     }
 
 
@@ -168,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mGameFlag = GAME_RESET;
+
+        setPickerColor(cColor(R.color.paint_black));
     }
 
     private void startGame() {
