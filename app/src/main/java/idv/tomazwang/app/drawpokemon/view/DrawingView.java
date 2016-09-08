@@ -162,11 +162,6 @@ public class DrawingView extends View {
         }
     }
 
-    public Bitmap getBitmap(){
-        this.setDrawingCacheEnabled(true);
-        return getDrawingCache();
-    }
-
     public void drawLastLine(){
         mCanvas.drawPath(mDrawingPath, mDrawingPaint);
         mDrawingPath.reset();

@@ -34,7 +34,7 @@ import idv.tomazwang.app.drawpokemon.view.DrawingView;
 public class MainActivity extends AppCompatActivity {
 
     private static final int COLUMN_SIZE = 4;
-    private static final int GAME_TIME = 30; //seconds.
+    private static final int GAME_TIME = 10; //seconds.
     private static final String POKEMON_LIST_FILE = "pokedex.json";
     private static final String TAG_RESULT_DIALOG = "result_dialog";
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int TIMER_RUNNING = 1;
     private static final int TIMER_PAUSE = 2;
     private ArrayList<Pokemon> mPokemonList = new ArrayList<>();
+    private int mPokeID;
+    private String mRawFileName;
+
 
 
     @IntDef({TIMER_STOP, TIMER_RUNNING, TIMER_PAUSE})
@@ -180,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        int pokeID = (int) ((Math.random() * mPokemonList.size()) + 1);
+        mPokeID = (int) ((Math.random() * mPokemonList.size()) + 1);
 
-        String rawFileName = mPokemonList.get(pokeID).getPic_name().split("\\.")[0];
+        mRawFileName = mPokemonList.get(mPokeID).getPic_name().split("\\.")[0];
 
         Glide
                 .with(this)
-                .load("android.resource://idv.tomazwang.app.drawpokemon/raw/" + rawFileName)
+                .load("android.resource://idv.tomazwang.app.drawpokemon/raw/" + mRawFileName)
                 .thumbnail(0.1f)
                 .error(R.drawable.pokeball)
                 .listener(new RequestListener<String, GlideDrawable>() {
@@ -307,11 +310,22 @@ public class MainActivity extends AppCompatActivity {
     public Bitmap getResultBitmap() {
 
         if (mDrawingView != null) {
-            return mDrawingView.getBitmap();
+
+            mDrawingView.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(mDrawingView.getDrawingCache());
+            mDrawingView.setDrawingCacheEnabled(false);
+            mDrawingView.destroyDrawingCache();
+
+            return bitmap;
         } else {
             return null;
         }
     }
+
+    public String getCurrentPoekmonRawFileName(){
+        return mRawFileName;
+    }
+
 
 
     private void showColorPicker() {
