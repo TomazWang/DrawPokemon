@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon;
+package idv.tomazwang.app.pokemondraw;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -28,13 +28,13 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import idv.tomazwang.app.drawpokemon.colorpicker.ColorPickerDialog;
-import idv.tomazwang.app.drawpokemon.view.DrawingView;
+import idv.tomazwang.app.pokemondraw.colorpicker.ColorPickerDialog;
+import idv.tomazwang.app.pokemondraw.view.DrawingView;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int COLUMN_SIZE = 4;
-    private static final int GAME_TIME = 10; //seconds.
+    private static final int GAME_TIME = 45; //seconds.
     private static final String POKEMON_LIST_FILE = "pokedex.json";
     private static final String TAG_RESULT_DIALOG = "result_dialog";
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupColorPicker();
         mDrawingView.setDrawable(false);
+        mTimerText.setText(String.valueOf(GAME_TIME));
     }
 
 

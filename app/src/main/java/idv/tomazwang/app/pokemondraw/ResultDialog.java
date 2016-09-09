@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon;
+package idv.tomazwang.app.pokemondraw;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

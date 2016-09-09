@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon;
+package idv.tomazwang.app.pokemondraw;
 
 import com.google.gson.annotations.SerializedName;
 

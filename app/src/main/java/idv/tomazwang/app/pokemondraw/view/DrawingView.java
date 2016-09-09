@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon.view;
+package idv.tomazwang.app.pokemondraw.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;

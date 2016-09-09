@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:gravity="center" />
 
-        <idv.tomazwang.app.drawpokemon.colorpicker.ColorPickerPalette
+        <idv.tomazwang.app.pokemondraw.colorpicker.ColorPickerPalette
             android:id="@+id/color_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

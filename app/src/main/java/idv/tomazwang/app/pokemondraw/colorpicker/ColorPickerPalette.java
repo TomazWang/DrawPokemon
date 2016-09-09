@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon.colorpicker;
+package idv.tomazwang.app.pokemondraw.colorpicker;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import idv.tomazwang.app.drawpokemon.R;
+import idv.tomazwang.app.pokemondraw.R;
 
 public class ColorPickerPalette extends TableLayout{
 

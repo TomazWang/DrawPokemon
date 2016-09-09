@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon.colorpicker;
+package idv.tomazwang.app.pokemondraw.colorpicker;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;

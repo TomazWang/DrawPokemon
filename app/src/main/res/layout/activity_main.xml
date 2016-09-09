@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="idv.tomazwang.app.drawpokemon.MainActivity"
+    tools:context="idv.tomazwang.app.pokemondraw.MainActivity"
     android:background="@color/bg_gray"
     >
 
@@ -68,7 +68,7 @@
         android:layout_marginBottom="15dp"
         >
 
-    <idv.tomazwang.app.drawpokemon.view.DrawingView
+    <idv.tomazwang.app.pokemondraw.view.DrawingView
         android:id="@+id/view_drawing_pannel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

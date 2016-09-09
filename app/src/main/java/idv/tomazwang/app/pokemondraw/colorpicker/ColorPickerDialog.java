@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon.colorpicker;
+package idv.tomazwang.app.pokemondraw.colorpicker;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 
-import idv.tomazwang.app.drawpokemon.R;
+import idv.tomazwang.app.pokemondraw.R;
 
 /**
  * Created by TomazWang on 2016/9/5.

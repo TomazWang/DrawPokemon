@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon.colorpicker;
+package idv.tomazwang.app.pokemondraw.colorpicker;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import idv.tomazwang.app.drawpokemon.R;
+import idv.tomazwang.app.pokemondraw.R;
 
 /**
  * Created by TomazWang on 2016/9/5.

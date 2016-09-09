@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon.colorpicker;/**
+package idv.tomazwang.app.pokemondraw.colorpicker;/**
  * Created by TomazWang on 2016/9/5.
  */
 

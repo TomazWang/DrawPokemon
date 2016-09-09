@@ -1,4 +1,4 @@
-package idv.tomazwang.app.drawpokemon;
+package idv.tomazwang.app.pokemondraw;
 
 import android.content.Context;
 import android.content.res.Configuration;
