@@ -12,13 +12,12 @@
         android:id="@+id/container_top"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="25dp"
-        android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="@dimen/left_space"
+        android:layout_marginBottom="25dp"
         android:layout_marginEnd="@dimen/left_space"
-        >
+        android:layout_marginStart="@dimen/left_space"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal">
 
 
         <ImageView
@@ -45,8 +44,8 @@
                 android:id="@+id/txt_pokemon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:maxLines="1"
                 android:text="\?\?\?"
                 android:textSize="@dimen/txtSize" />
@@ -55,9 +54,9 @@
                 android:id="@+id/txt_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_gravity="center_horizontal"
                 android:text="30"
                 android:textSize="@dimen/txtSize" />
 
@@ -86,32 +85,39 @@
             android:layout_alignParentBottom="true"
             android:background="@android:color/white" />
 
-        <ImageView
-            android:id="@+id/btn_play"
-            android:layout_width="@dimen/touch_size_big"
-            android:layout_height="@dimen/touch_size_big"
-            android:layout_centerInParent="true"
-            android:src="@drawable/btn_play" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
-        <ImageView
-            android:id="@+id/btn_setting"
-            android:layout_width="@dimen/touch_size"
-            android:layout_height="@dimen/touch_size"
-            android:layout_below="@id/btn_play"
-            android:layout_toLeftOf="@id/btn_play"
-            android:padding="@dimen/btn_padding"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/ic_settings3" />
+            <ImageView
+                android:id="@+id/btn_play"
+                android:layout_width="@dimen/touch_size_big"
+                android:layout_height="@dimen/touch_size_big"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/btn_play" />
 
-        <ImageView
-            android:id="@+id/btn_info"
-            android:layout_width="@dimen/touch_size"
-            android:layout_height="@dimen/touch_size"
-            android:layout_below="@id/btn_play"
-            android:padding="@dimen/btn_padding"
-            android:layout_toRightOf="@id/btn_play"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/ic_info" />
+            <ImageView
+                android:id="@+id/btn_setting"
+                android:layout_width="@dimen/touch_size"
+                android:layout_height="@dimen/touch_size"
+                android:layout_below="@id/btn_play"
+                android:layout_marginTop="20dp"
+                android:layout_toStartOf="@id/btn_play"
+                android:padding="@dimen/btn_padding"
+                app:srcCompat="@drawable/ic_settings3" />
+
+            <ImageView
+                android:id="@+id/btn_info"
+                android:layout_width="@dimen/touch_size"
+                android:layout_height="@dimen/touch_size"
+                android:layout_below="@id/btn_play"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/btn_play"
+                android:padding="@dimen/btn_padding"
+                app:srcCompat="@drawable/ic_info" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/btn_color_picker"
@@ -125,7 +131,6 @@
             android:src="@drawable/painter_palette_black" />
 
     </RelativeLayout>
-
 
 
 </RelativeLayout>

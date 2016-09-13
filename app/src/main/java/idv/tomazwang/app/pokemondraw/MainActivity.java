@@ -37,6 +37,8 @@ import idv.tomazwang.app.pokemondraw.colorpicker.ColorPickerDialog;
 import idv.tomazwang.app.pokemondraw.view.DrawingView;
 
 import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         setupColorPicker();
+        mColorPickBtn.setVisibility(GONE);
+
         mDrawingView.setDrawable(false);
         mTimerText.setText(String.valueOf(mGameTime));
     }
@@ -192,6 +196,16 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setVisibility(visiblity);
         mSettingBtn.setVisibility(visiblity);
         mInfoBtn.setVisibility(visiblity);
+
+        switch (visiblity){
+            case GONE:
+            case INVISIBLE:
+                mColorPickBtn.setVisibility(VISIBLE);
+                break;
+            case VISIBLE:
+                mColorPickBtn.setVisibility(GONE);
+        }
+
     }
 
 
