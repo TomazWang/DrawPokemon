@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+
 
     <ImageView
         android:id="@+id/iv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        />
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-8dp"
+        android:layout_marginTop="-4dp"
+        android:indeterminate="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,15 +31,15 @@
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 
+
         <ImageView
-            android:id="@+id/btn_save"
+            android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="Save"
-            android:minHeight="40dp"
-            android:src="@android:drawable/ic_menu_save" />
-
+            android:contentDescription="Share"
+            android:padding="@dimen/btn_padding"
+            android:src="@drawable/ic_delete" />
 
         <ImageView
             android:id="@+id/btn_share"
@@ -37,15 +47,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="Share"
-            android:src="@android:drawable/ic_menu_share" />
+            android:padding="@dimen/btn_padding"
+            android:src="@drawable/ic_share" />
 
 
         <ImageView
             android:id="@+id/btn_again"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/touch_size"
             android:layout_weight="1"
             android:contentDescription="Play Again"
-            android:src="@android:drawable/ic_menu_rotate" />
+            android:padding="@dimen/btn_padding"
+            android:src="@drawable/ic_refresh" />
     </LinearLayout>
 </LinearLayout>
