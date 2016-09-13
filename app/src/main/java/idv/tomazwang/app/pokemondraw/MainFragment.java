@@ -179,9 +179,6 @@ public class MainFragment extends Fragment{
 
         mPlayBtn.setOnClickListener(v -> {
 
-            MainActivity activity = (MainActivity)getActivity();
-
-
             int timeState = mTimerState;
 
             if (timeState == TIMER_STOP) {
@@ -192,6 +189,9 @@ public class MainFragment extends Fragment{
 
             hidePlayBtn();
         });
+
+
+        mSettingBtn.setOnClickListener(v -> ((MainActivity)getActivity()).startSetting());
     }
 
     @Override

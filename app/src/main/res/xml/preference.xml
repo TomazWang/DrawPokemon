@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="@string/setting_key_show_credit"
+        android:title="@string/setting_label_show_credit"
+        android:icon="@drawable/ic_blue_information"
+        />
+
+
+
+</PreferenceScreen>

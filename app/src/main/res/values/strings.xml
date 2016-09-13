@@ -7,4 +7,8 @@
     <string name="cannot_share_image">Cannot share image due to image saving problem.</string>
     <string name="share_using">Share Image Using</string>
     <string name="delete_file">delete file</string>
+    <string name="setting_label_show_credit">Credits</string>
+    <string name="setting_key_show_credit">show_credit</string>
+    <string name="setting_key_support">support</string>
+    <string name="setting_label_support">Support Me!</string>
 </resources>
