@@ -141,6 +141,7 @@ public class ResultDialog extends DialogFragment {
         if(imageFile.exists()){
             imageFile.delete();
             Toast.makeText(getActivity(), R.string.delete_file, Toast.LENGTH_SHORT).show();
+            playAgain();
         }
 
     }
