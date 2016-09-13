@@ -168,14 +168,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawingView.cleanCanvas();
         mDrawingView.setDrawable(false);
 
-        if (mColorPickerDialog != null) {
-            mColorPickerDialog.dismiss();
-        }
+        closeColorPicker();
 
         mGameFlag = GAME_RESET;
 
         setPickerColor(cColor(R.color.paint_black));
     }
+
 
     private void startGame() {
 
@@ -224,9 +223,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayBtn.setVisibility(View.VISIBLE);
         mPlayBtn.setText(getResources().getString(R.string.resume));
 
-        if (mColorPickerDialog != null) {
-            mColorPickerDialog.dismiss();
-        }
+        closeColorPicker();
     }
 
     private void resumeGame() {
@@ -242,13 +239,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopGame() {
 
+
+        closeColorPicker();
         mDrawingView.drawLastLine();
+        mDrawingView.setDrawable(false);
 
         ResultDialog.newInstance().show(getFragmentManager(), TAG_RESULT_DIALOG);
 
         stopTimer();
-        mDrawingView.setDrawable(false);
-
         mGameFlag = GAME_STOP;
 
     }
@@ -346,6 +344,13 @@ public class MainActivity extends AppCompatActivity {
 
         mColorPickerDialog.setColorSelectedListener(this::colorSelected);
         mColorPickerDialog.show(getFragmentManager(), "color_picker");
+    }
+
+
+    private void closeColorPicker() {
+        if (mColorPickerDialog != null) {
+            mColorPickerDialog.dismiss();
+        }
     }
 
     private void colorSelected(int color) {
