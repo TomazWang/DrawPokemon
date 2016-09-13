@@ -43,19 +43,22 @@ public class ResultDialog extends DialogFragment {
     private ImageView mDeleteBtn;
     private String mFileName;
     private ProgressBar mProgressBar;
+    private MainFragment mainFragment;
 
     public ResultDialog() {
         super();
     }
 
 
-    public static ResultDialog newInstance(String fileName) {
+    public static ResultDialog newInstance(String fileName, MainFragment mf) {
         ResultDialog rd = new ResultDialog();
 
         Bundle bundle = new Bundle();
         bundle.putString(KEY_FILE_PATH, fileName);
 
         rd.setArguments(bundle);
+
+        rd.setMainFragment(mf);
         return rd;
     }
 
@@ -76,10 +79,9 @@ public class ResultDialog extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_result, null);
         mResultImg = (ImageView) view.findViewById(R.id.iv_result);
         mShareBtn = (ImageView) view.findViewById(R.id.btn_share);
-        mAgainBtn = (ImageView)view.findViewById(R.id.btn_again);
-        mDeleteBtn = (ImageView)view.findViewById(R.id.btn_delete);
+        mAgainBtn = (ImageView) view.findViewById(R.id.btn_again);
+        mDeleteBtn = (ImageView) view.findViewById(R.id.btn_delete);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
 
 
         mDeleteBtn.setColorFilter(Color.parseColor("#B3696969"), PorterDuff.Mode.SRC_ATOP);
@@ -99,7 +101,6 @@ public class ResultDialog extends DialogFragment {
     }
 
 
-
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
@@ -107,7 +108,7 @@ public class ResultDialog extends DialogFragment {
     }
 
     private void playAgain() {
-        ((MainActivity) getActivity()).playAgain();
+        mainFragment.playAgain();
         mDialog.dismiss();
     }
 
@@ -116,16 +117,16 @@ public class ResultDialog extends DialogFragment {
         // TODO: share image
 
 
-        File pictureFile = ((MainActivity)getActivity()).getResultFile();
+        File pictureFile = mainFragment.getResultFile();
 
-        if(pictureFile != null){
+        if (pictureFile != null) {
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("image/jpeg");
             shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pictureFile));
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)));
 
-        }else{
+        } else {
             Toast.makeText(getActivity(), R.string.cannot_share_image, Toast.LENGTH_SHORT).show();
         }
 
@@ -135,10 +136,10 @@ public class ResultDialog extends DialogFragment {
     private void deleteFile(String fileName) {
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                ,APP_NAME);
+                , APP_NAME);
         File imageFile = new File(mediaStorageDir.getPath() + File.separator + fileName);
 
-        if(imageFile.exists()){
+        if (imageFile.exists()) {
             imageFile.delete();
             Toast.makeText(getActivity(), R.string.delete_file, Toast.LENGTH_SHORT).show();
             playAgain();
@@ -149,14 +150,15 @@ public class ResultDialog extends DialogFragment {
 
     public void notifyImageComplete() {
 
-        File file = ((MainActivity)getActivity()).getResultFile();
+
+        File file = mainFragment.getResultFile();
 
         mProgressBar.setVisibility(View.GONE);
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int heigth = size.y *6 / 10;
+        int heigth = size.y * 6 / 10;
 
         ViewGroup.LayoutParams layoutParams = mResultImg.getLayoutParams();
         layoutParams.height = heigth;
@@ -179,5 +181,8 @@ public class ResultDialog extends DialogFragment {
     }
 
 
+    public void setMainFragment(MainFragment mainFragment) {
+        this.mainFragment = mainFragment;
+    }
 
 }
