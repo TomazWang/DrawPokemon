@@ -14,9 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +36,10 @@ import java.util.Date;
 import idv.tomazwang.app.pokemondraw.colorpicker.ColorPickerDialog;
 import idv.tomazwang.app.pokemondraw.view.DrawingView;
 
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int COLUMN_SIZE = 4;
@@ -49,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
     // -- widgets
     private DrawingView mDrawingView;
-    private Spinner mSpinnerPokemonName;
+    private TextView mTxtPokemonName;
     private ImageView mPokemonPic;
     private TextView mTimerText;
-    private Button mPlayBtn;
+    private ImageView mPlayBtn;
+    private ImageView mSettingBtn;
+    private ImageView mInfoBtn;
 
 
     // color picker
@@ -116,13 +120,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDrawingView = (DrawingView) findViewById(R.id.view_drawing_pannel);
-        mSpinnerPokemonName = (Spinner) findViewById(R.id.spinner_pokemon_name);
+        mTxtPokemonName = (TextView) findViewById(R.id.txt_pokemon_name);
         mPokemonPic = (ImageView) findViewById(R.id.iv_pokemon_pic);
         mTimerText = (TextView) findViewById(R.id.txt_timer);
         mColorPickBtn = (ImageView) findViewById(R.id.btn_color_picker);
-        mPlayBtn = (Button) findViewById(R.id.btn_play);
+        mPlayBtn = (ImageView) findViewById(R.id.btn_play);
+
+        mSettingBtn = (ImageView) findViewById(R.id.btn_setting);
+        mInfoBtn = (ImageView) findViewById(R.id.btn_info);
+
 
         setupColorPicker();
+        mColorPickBtn.setVisibility(GONE);
+
         mDrawingView.setDrawable(false);
         mTimerText.setText(String.valueOf(mGameTime));
     }
@@ -133,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         readAllPokemon();
+        mDrawingView.setDrawable(false);
 
         mPlayBtn.setOnClickListener(v -> {
 
@@ -142,8 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 resumeGame();
             }
 
-            mPlayBtn.setVisibility(View.GONE);
-
+            hidePlayBtn();
         });
 
     }
@@ -178,6 +188,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void hidePlayBtn() {
+        showPlayBtn(GONE);
+    }
+
+    private void showPlayBtn(int visiblity) {
+        mPlayBtn.setVisibility(visiblity);
+        mSettingBtn.setVisibility(visiblity);
+        mInfoBtn.setVisibility(visiblity);
+
+        switch (visiblity){
+            case GONE:
+            case INVISIBLE:
+                mColorPickBtn.setVisibility(VISIBLE);
+                break;
+            case VISIBLE:
+                mColorPickBtn.setVisibility(GONE);
+        }
+
+    }
+
 
     @Override
     protected void onPause() {
@@ -193,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawingView.cleanCanvas();
         mDrawingView.setDrawable(false);
+
+        mTxtPokemonName.setText("???");
 
         mPokeIDThisRound = 0;
         mPkmRawFileNameThisRound = "";
@@ -217,6 +249,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         mPokeIDThisRound = (int) ((Math.random() * mPokemonList.size()) + 1);
+
+        String pkmName = mPokemonList.get(mPokeIDThisRound).getName_zh();
+        mTxtPokemonName.setText("#"+ mPokeIDThisRound + " " + pkmName);
+
         mPkmRawFileNameThisRound = mPokemonList.get(mPokeIDThisRound).getPic_name().split("\\.")[0];
 
         mSaveFileNameThisRound = getNewFileName(mPokeIDThisRound);
@@ -254,8 +290,9 @@ public class MainActivity extends AppCompatActivity {
         pauseTimer();
         mGameFlag = GAME_PAUSE;
 
-        mPlayBtn.setVisibility(View.VISIBLE);
-        mPlayBtn.setText(getResources().getString(R.string.resume));
+        mPlayBtn.setImageDrawable(cDrawable(R.drawable.btn_resume));
+
+        showPlayBtn(View.VISIBLE);
 
         closeColorPicker();
     }
@@ -295,8 +332,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void playAgain() {
         resetGame();
-        mPlayBtn.setVisibility(View.VISIBLE);
-        mPlayBtn.setText(getString(R.string.paly));
+        mPlayBtn.setImageDrawable(cDrawable(R.drawable.btn_play));
+
+        showPlayBtn(View.VISIBLE);
+
     }
 
 
