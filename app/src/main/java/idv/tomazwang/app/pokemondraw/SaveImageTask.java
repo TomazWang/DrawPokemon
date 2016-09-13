@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by TomazWang on 2016/9/7.
@@ -23,10 +21,12 @@ public class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
     private static final String TAG = SaveImageTask.class.getSimpleName();
     private final Context mContext;
     private final Callback mCallback;
+    private final String mSaveName;
 
-    public SaveImageTask(Context context, Callback callback){
+    public SaveImageTask(Context context, String fileName, Callback callback){
         this.mContext = context;
         this.mCallback = callback;
+        this.mSaveName = fileName;
     }
 
 
@@ -34,7 +34,7 @@ public class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
     protected File doInBackground(Bitmap... bitmaps) {
 
         Bitmap image = bitmaps[0];
-        return saveBitmapToFile(mContext, image);
+        return saveBitmapToFile(mContext, mSaveName, image);
 
     }
 
@@ -49,9 +49,9 @@ public class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
     }
 
 
-    public static File saveBitmapToFile(Context ctx, Bitmap bitmap){
+    public File saveBitmapToFile(Context ctx, String mSaveName, Bitmap bitmap){
 
-        File pictureFile = getOutputMediaFile(ctx);
+        File pictureFile = getOutputMediaFile(ctx, mSaveName);
         if (pictureFile == null) {
             Log.d(TAG,
                     "Error creating media file, check storage permissions: ");
@@ -76,7 +76,7 @@ public class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
         return pictureFile;
     }
 
-    public static File getOutputMediaFile(Context context){
+    public static File getOutputMediaFile(Context context, String mSaveName){
 
         String state = Environment.getExternalStorageState();
         if (! Environment.MEDIA_MOUNTED.equals(state)) {
@@ -98,12 +98,9 @@ public class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
                 return null;
             }
         }
-        // Create a media file name
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        String mImageName="pd_"+ timeStamp +".jpg";
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+        // Create a media file name
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + mSaveName);
         return mediaFile;
     }
 
