@@ -1,6 +1,8 @@
 package idv.tomazwang.app.pokemondraw;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -10,6 +12,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -35,8 +38,12 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import idv.tomazwang.app.pokemondraw.colorpicker.ColorPickerDialog;
+import idv.tomazwang.app.pokemondraw.utils.LoadImageFromRawTask;
+import idv.tomazwang.app.pokemondraw.utils.SaveImageTask;
+import idv.tomazwang.app.pokemondraw.utils.Utils;
 import idv.tomazwang.app.pokemondraw.view.DrawingView;
 
 import static android.view.View.GONE;
@@ -47,7 +54,7 @@ import static android.view.View.VISIBLE;
  * Created by TomazWang on 2016/9/13.
  */
 
-public class MainFragment extends Fragment{
+public class MainFragment extends Fragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
@@ -132,8 +139,6 @@ public class MainFragment extends Fragment{
         return fragment;
     }
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -175,6 +180,11 @@ public class MainFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mGameTime = sp.getInt(getString(R.string.setting_key_set_time),SetTimerDialog.DEFAULT_TIME);
+
+        mTimerText.setText(String.valueOf(mGameTime));
+
         readAllPokemon();
 
         mPlayBtn.setOnClickListener(v -> {
@@ -192,6 +202,19 @@ public class MainFragment extends Fragment{
 
 
         mSettingBtn.setOnClickListener(v -> ((MainActivity)getActivity()).startSetting());
+        mInfoBtn.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            AlertDialog infoDialog =
+                    builder.setTitle(R.string.help_titile)
+                        .setMessage(R.string.help_context)
+                    .setPositiveButton(null, null)
+                    .setNegativeButton(null, null)
+                    .create();
+
+            infoDialog.show();
+
+        });
     }
 
     @Override
@@ -201,6 +224,7 @@ public class MainFragment extends Fragment{
             pauseGame();
         }
     }
+
 
     private void setupColorPicker() {
 
@@ -320,13 +344,6 @@ public class MainFragment extends Fragment{
 
 
 
-    // -- About Game
-
-
-
-
-
-
     private void readAllPokemon() {
         try {
 
@@ -356,6 +373,9 @@ public class MainFragment extends Fragment{
         }
 
     }
+
+
+    // -- About Game
 
     public void resetGame() {
         mPokemonPic.setImageDrawable(cDrawable(R.drawable.pokeball));
@@ -389,7 +409,14 @@ public class MainFragment extends Fragment{
 
         mPokeIDThisRound = (int) ((Math.random() * mPokemonList.size()) + 1);
 
-        String pkmName = mPokemonList.get(mPokeIDThisRound).getName_zh();
+        String pkmName;
+
+        if(Locale.getDefault().getLanguage().equals(new Locale("zh").getLanguage())){
+            pkmName = mPokemonList.get(mPokeIDThisRound).getName_zh();
+        }else{
+            pkmName = mPokemonList.get(mPokeIDThisRound).getName_en();
+        }
+
         mTxtPokemonName.setText("#"+ mPokeIDThisRound + " " + pkmName);
 
         mPkmRawFileNameThisRound = mPokemonList.get(mPokeIDThisRound).getPic_name().split("\\.")[0];

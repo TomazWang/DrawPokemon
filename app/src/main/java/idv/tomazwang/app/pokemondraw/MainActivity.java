@@ -16,22 +16,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         mFragment = MainFragment.newInstance();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container_main, mFragment, MF_TAG)
-                .addToBackStack(null)
                 .commit();
 
-
     }
-
 
     public void startSetting(){
 
         SettingFragment settingFragment = new SettingFragment();
-        getFragmentManager().beginTransaction().replace(R.id.container_main, settingFragment, ST_TAG).commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container_main, settingFragment, ST_TAG)
+                .addToBackStack(null)
+                .commit();
 
     }
 

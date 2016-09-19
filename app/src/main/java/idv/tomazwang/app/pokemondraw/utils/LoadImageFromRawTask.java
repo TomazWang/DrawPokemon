@@ -1,4 +1,4 @@
-package idv.tomazwang.app.pokemondraw;
+package idv.tomazwang.app.pokemondraw.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.ExecutionException;
+
+import idv.tomazwang.app.pokemondraw.R;
 
 import static android.content.ContentValues.TAG;
 

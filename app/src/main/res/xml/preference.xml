@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        android:key="@string/setting_key_show_credit"
-        android:title="@string/setting_label_show_credit"
-        android:icon="@drawable/ic_blue_information"
-        />
+    <PreferenceCategory android:title="@string/setting_category_game">
+
+        <idv.tomazwang.app.pokemondraw.SetTimerDialog
+            android:icon="@drawable/ic_blue_clock"
+            android:key="@string/setting_key_set_time"
+            android:summary="30 sec."
+            android:title="@string/setting_label_set_time" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_category_about">
+
+        <Preference
+            android:icon="@drawable/ic_blue_information"
+            android:key="@string/setting_key_show_credit"
+            android:title="@string/setting_label_show_credit" />
 
 
+    </PreferenceCategory>
 
 </PreferenceScreen>

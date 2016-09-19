@@ -9,4 +9,5 @@
     <dimen name="txtSize">25sp</dimen>
     <dimen name="touch_size_small">32dp</dimen>
     <dimen name="left_space">15dp</dimen>
+    <dimen name="txtSize_sec">45sp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-package idv.tomazwang.app.pokemondraw;
+package idv.tomazwang.app.pokemondraw.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

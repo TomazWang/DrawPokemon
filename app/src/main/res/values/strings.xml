@@ -1,14 +1,63 @@
 <resources>
     <string name="app_name">Pokemon Draw</string>
+
+    <!-- dialog -->
     <string name="default_color_picker_title">Pick A Color</string>
+
+
+    <!-- Toast msg -->
+    <string name="saveComplete">Save Complete</string>
+
+    <!-- Error msg -->
+    <string name="cannot_share_image">Cannot share image due to image saving problem.</string>
+
+
+    <!-- Buttons -->
+    <string name="delete_file">delete file</string>
+    <string name="share_using">Share Image Using</string>
     <string name="paly">Play</string>
     <string name="resume">Resume</string>
-    <string name="saveComplete">Save Complete</string>
-    <string name="cannot_share_image">Cannot share image due to image saving problem.</string>
-    <string name="share_using">Share Image Using</string>
-    <string name="delete_file">delete file</string>
+
+
+    <!-- Setting menu -->
+    <string name="setting_label_about">About</string>
     <string name="setting_label_show_credit">Credits</string>
-    <string name="setting_key_show_credit">show_credit</string>
-    <string name="setting_key_support">support</string>
+    <string name="setting_key_show_credit" translatable="false">show_credit</string>
+    <string name="setting_key_support" translatable="false">support</string>
     <string name="setting_label_support">Support Me!</string>
+    <string name="setting_key_set_time" translatable="false">setTime</string>
+    <string name="setting_label_set_time">Timer</string>
+
+
+    <string name="format_time_summary">%1$s sec.</string>
+
+    <string name="credits">
+        Special Thanks To:
+        \n
+        \n\t- Art:
+        \n\t\tPokemon.
+        \n\t\t<a href="http://www.flaticon.com/authors/roundicons-freebies">Roundicons.com</a>
+        \n\t\t<a href="http://www.flaticon.com">Flaticon.com</a>
+        \n
+        \n\t- Open Source:
+        \n\t\t<a href="https://github.com/google/gson">Gson</a>
+    </string>
+
+    <string name="help_titile">Help</string>
+
+    <string name="help_context">
+        Help:
+        \n
+        \n1. Click "Play Button".
+        \n2. A Pokemon will show up on the top.
+        \n3. Draw that Pokemon before the timer ends.
+        \n4. Share the image you draw to friends.
+    </string>
+
+
+
+
+    <string name="setting_category_game">Game</string>
+    <string name="setting_category_about">About</string>
+    <string name="seconed">sec.</string>
 </resources>
