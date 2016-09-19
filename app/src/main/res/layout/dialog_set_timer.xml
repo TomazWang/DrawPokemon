@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:id="@+id/txt_sec"
+        android:textSize="@dimen/txtSize_sec"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_sec"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="@dimen/btn_padding"
+        android:paddingRight="@dimen/btn_padding"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:id="@+id/seekBar_timer" />
+
+    <TextView
+        android:text="@string/seconed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txt_sec"
+        android:layout_toEndOf="@+id/txt_sec"
+        android:layout_marginStart="7dp"
+        android:id="@+id/textView" />
+
+
+</RelativeLayout>
