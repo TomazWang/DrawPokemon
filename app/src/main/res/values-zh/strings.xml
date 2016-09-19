@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pokemon Draw</string>
+    <string name="cannot_share_image">分享發生錯誤：圖片儲存發生問題</string>
+    <string name="default_color_picker_title">請選擇顏色</string>
+    <string name="format_time_summary">%1$s 秒</string>
+    <string name="delete_file">刪除檔案</string>
+    <string name="help_titile">幫助</string>
+    <string name="paly">開始遊戲</string>
+    <string name="resume">繼續遊戲</string>
+    <string name="saveComplete">儲存成功</string>
+    <string name="seconed">秒</string>
+    <string name="setting_category_about">關於</string>
+    <string name="setting_category_game">遊戲相關</string>
+    <string name="setting_label_about">關於</string>
+    <string name="setting_label_set_time">計時器</string>
+    <string name="setting_label_support">支持我們</string>
+    <string name="share_using">分享...</string>
+
+
+
+    <string name="help_context">
+        幫助:
+        \n
+        \n1. 點擊開始遊戲按鈕
+        \n2. 會有一個神奇寶貝出現在上面
+        \n3. 在時間內畫出這個神奇寶貝
+        \n4. 分享給你的朋友!
+    </string>
+
+</resources>

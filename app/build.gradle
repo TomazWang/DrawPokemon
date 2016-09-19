@@ -4,14 +4,14 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24"
     defaultConfig {
-        applicationId "idv.tomazwang.app.drawpokemon"
+        applicationId 'idv.tomazwang.app.drawpokemon'
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        jackOptions{
+        jackOptions {
             enabled true
         }
 
@@ -22,10 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
+    }
+    productFlavors {
     }
 }
 
