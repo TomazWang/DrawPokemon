@@ -5,8 +5,9 @@
     <dimen name="color_circle_size">30dp</dimen>
     <dimen name="touch_size">48dp</dimen>
     <dimen name="btn_padding">6dp</dimen>
-    <dimen name="touch_size_big">54dp</dimen>
+    <dimen name="touch_size_big">64dp</dimen>
     <dimen name="txtSize">25sp</dimen>
     <dimen name="touch_size_small">32dp</dimen>
     <dimen name="left_space">15dp</dimen>
+    <dimen name="txtSize_sec">45sp</dimen>
 </resources>
